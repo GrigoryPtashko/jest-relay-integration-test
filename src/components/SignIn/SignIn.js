@@ -1,8 +1,7 @@
 import React from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SignIn.scss';
 
-class SignIn extends React.Component {
+export default class SignIn extends React.Component {
   render() {
     return (
       <div>
@@ -20,5 +19,3 @@ class SignIn extends React.Component {
     );
   }
 }
-
-export default withStyles(s)(SignIn);

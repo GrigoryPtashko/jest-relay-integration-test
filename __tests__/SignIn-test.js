@@ -1,13 +1,11 @@
-// jest.unmock('../src/components/SignIn');
-
-jest.disableAutomock();
+jest.mock('jsdom/lib/jsdom/browser/Window');
 
 import React from 'react';
 import ReactDom from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import SignIn from '../src/components/SignIn';
 
-xdescribe('SignIn', () => {
+describe('SignIn', () => {
   it('shows the social login buttons', () => {
     const signin = TestUtils.renderIntoDocument(
       <div><SignIn /></div>
