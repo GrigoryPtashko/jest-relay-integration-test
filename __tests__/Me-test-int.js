@@ -1,4 +1,5 @@
-jest.mock('react/lib/ReactOwner'); // TODO: это убрать или как?
+jest.useRealTimers();
+// jest.mock('react/lib/ReactOwner'); // TODO: это убрать или как?
 jest.unmock('react-relay');
 
 import React from 'react'; // eslint-disable-line import/imports-first
@@ -35,7 +36,7 @@ describe('Me', () => {
         expect(this.props.root.me).not.toBe(null);
         expect(this.props.root.me.firstName).not.toBe(null);
         expect(this.props.root.me.authorities[0]).not.toBe(null);
-        expect(this.props.root.me.authorities[0].authority).toEqual('ROLE_ANONYMOUS');
+        expect(this.props.root.me.authorities[0].authority).toEqual('ROLE_ANONYMOUS_AAA');
 
         return (
           <div>
