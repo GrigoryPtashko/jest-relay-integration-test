@@ -1,5 +1,0 @@
-exports[`test can make request to /q anyway 1`] = `
-<div>
-  loading
-</div>
-`;

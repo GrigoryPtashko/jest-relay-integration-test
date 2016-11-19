@@ -51,5 +51,8 @@
         2
       ]
     }
+  },
+  "jest": {
+    "setupFiles": ["./test/env.js"]
   }
 }
