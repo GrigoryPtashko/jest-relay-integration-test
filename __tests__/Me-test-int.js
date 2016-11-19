@@ -1,83 +1,78 @@
-jest.mock('react/lib/ReactOwner'); // TODO: это убрать или как?
-jest.mock('react-relay').unmock('react-relay');
-
 import React from 'react'; // eslint-disable-line import/imports-first
 import Relay from 'react-relay'; // eslint-disable-line import/imports-first
-import TestUtils from 'react-addons-test-utils'; // eslint-disable-line import/imports-first
+import renderer from 'react-test-renderer';
+import RelayStore from '../src/RelayStore';
 
-Relay.injectNetworkLayer(
-  new Relay.DefaultNetworkLayer('http://hashnews.cfapps.io/q')
-);
 
-describe('Me', () => {
-  it('can make request to /q anyway', () => {
-    class RootRoute extends Relay.Route {
-      static queries = {
-        root: (Component) => Relay.QL`
-            query {
-                root {
-                    ${Component.getFragment('root')}
-                }
+RelayStore.reset(new Relay.DefaultNetworkLayer('http://hashnews.cfapps.io/q'));
+
+const delay = value => new Promise(resolve => setTimeout(() => resolve(), value));
+
+class RootRoute extends Relay.Route {
+  static queries = {
+    root: (Component) => Relay.QL`
+        query {
+            root {
+                ${Component.getFragment('root')}
             }
-        `,
-      };
+        }
+    `,
+  };
 
-      static routeName = 'RootRoute';
-    }
+  static routeName = 'RootRoute';
+}
 
-    class AppRoot extends React.Component {
-      static propTypes = {
-        root: React.PropTypes.object.isRequired,
-      };
+class AppRoot extends React.Component {
+  static propTypes = {
+    root: React.PropTypes.object.isRequired,
+  };
 
-      render() {
-        expect(this.props.root).not.toBe(null);
-        expect(this.props.root.me).not.toBe(null);
-        expect(this.props.root.me.firstName).not.toBe(null);
-        expect(this.props.root.me.authorities[0]).not.toBe(null);
-        expect(this.props.root.me.authorities[0].authority).toEqual('ROLE_ANONYMOUS_AA');
-
-        return (
-          <div>
-            {this.props.root.me.authorities[0].authority}
-          </div>
-        );
-      }
-    }
-
-    const AppContainer = Relay.createContainer(AppRoot, {
-      fragments: {
-        root: () => Relay.QL`
-            fragment on Root {
-                me {
-                    firstName
-                    email
-                    authorities {
-                        authority
-                    }
-                }
-            }
-        `,
-      },
-    });
-
-    const container = TestUtils.renderIntoDocument(
-      <Relay.Renderer
-        Container={AppContainer}
-        queryConfig={new RootRoute()}
-        environment={Relay.Store}
-        render={({ done, error, props, retry, stale }) => {
-          if (error) {
-            return <div>error</div>;
-          } else if (props) {
-            return <AppContainer {...props} />;
-          } else {
-            return <div>loading</div>;
-          }
-        }}
-      />
+  render() {
+    return (
+      <div>
+        {this.props.root.me.authorities[0].authority}
+      </div>
     );
+  }
+}
 
-    return new Promise(resolve => setTimeout(() => resolve(), 1000));
-  });
+const AppContainer = Relay.createContainer(AppRoot, {
+  fragments: {
+    root: () => Relay.QL`
+        fragment on Root {
+            me {
+                firstName
+                email
+                authorities {
+                    authority
+                }
+            }
+        }
+    `,
+  },
 });
+
+
+it('can make request to /q anyway', async () => {
+  const tree = renderer.create(
+    <Relay.Renderer
+      Container={AppContainer}
+      queryConfig={new RootRoute()}
+      environment={Relay.Store}
+      forceFetch={true}
+      render={({ error, props }) => {
+        if (error) {
+          return <div>error</div>;
+        } else if (props) {
+          return <AppContainer {...props} />;
+        }
+
+        return <div>loading</div>;
+      }}
+    />);
+
+  await delay(3000);
+
+  expect(tree.toJSON()).toMatchSnapshot();
+});
+

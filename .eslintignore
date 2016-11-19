@@ -2,3 +2,5 @@ node/
 node_modules/
 static/
 babelRelayPlugin.js
+.idea
+.git

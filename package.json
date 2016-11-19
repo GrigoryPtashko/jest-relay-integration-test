@@ -2,30 +2,33 @@
   "private": true,
   "author": "Grigory Ptashko <grigory.ptashko@gamil.com>",
   "devDependencies": {
-    "babel-cli": "^6.16.0",
-    "babel-core": "^6.17.0",
-    "babel-eslint": "^7.0.0",
-    "babel-polyfill": "^6.16.0",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^17.0.2",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-preset-fbjs": "^2.1.0",
-    "babel-preset-jest": "^16.0.0",
     "babel-relay-plugin": "^0.9.3",
-    "eslint": "^3.7.1",
-    "eslint-plugin-babel": "^3.3.0",
-    "eslint-plugin-import": "^2.0.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.3.0",
-    "graphql": "^0.7.1",
-    "graphql-relay": "^0.4.3",
-    "jest-cli": "^16.0.1",
-    "react": "^15.3.2",
-    "react-addons-test-utils": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb-base": "^10.0.1",
+    "eslint-plugin-babel": "^4.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.7.1",
+    "graphql": "^0.8.2",
+    "graphql-relay": "^0.4.4",
+    "jest": "^17.0.3",
+    "jest-cli": "^17.0.3",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
     "react-relay": "^0.9.3",
-    "sync-request": "^3.0.1"
+    "react-test-renderer": "^15.4.0",
+    "sync-request": "^3.0.1",
+    "xhr2": "^0.1.3"
   },
   "scripts": {
     "clean": "rm -rf ../resources/static",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src __tests__ test"
   },
   "eslintConfig": {
     "env": {
@@ -37,6 +40,7 @@
       "babel"
     ],
     "extends": [
+      "airbnb-base",
       "plugin:react/recommended"
     ],
     "rules": {
@@ -44,27 +48,7 @@
         2,
         120,
         2
-      ],
-      "generator-star-spacing": 0,
-      "new-cap": 0,
-      "array-bracket-spacing": 0,
-      "object-shorthand": 0,
-      "arrow-parens": 0,
-      "no-await-in-loop": 0,
-      "flow-object-type": 0,
-      "babel/generator-star-spacing": 1,
-      "babel/new-cap": 1,
-      "babel/array-bracket-spacing": 1,
-      "babel/object-shorthand": 1,
-      "babel/arrow-parens": 1,
-      "babel/no-await-in-loop": 1,
-      "babel/flow-object-type": 1
-    }
-  },
-  "jest": {
-    "scriptPreprocessor": "jestPreprocessor.js",
-    "moduleNameMapper": {
-      "^.+\\.(scss)$": "<rootDir>/src/styleMock.js"
+      ]
     }
   }
 }

@@ -1,3 +1,4 @@
 {
-  "plugins": ["./babelRelayPlugin.js"]
+  "presets": ["fbjs"],
+  "plugins": ["./babelRelayPlugin.js", "transform-async-to-generator"]
 }
