@@ -2,25 +2,19 @@ import React from 'react'; // eslint-disable-line import/imports-first
 import Relay from 'react-relay'; // eslint-disable-line import/imports-first
 import renderer from 'react-test-renderer';
 import RelayStore from '../src/RelayStore';
-
+import { createRenderer } from '../src/RelayUtils';
 
 RelayStore.reset(new Relay.DefaultNetworkLayer('http://hashnews.cfapps.io/q'));
 
 const delay = value => new Promise(resolve => setTimeout(() => resolve(), value));
 
-class RootRoute extends Relay.Route {
-  static queries = {
-    root: (Component) => Relay.QL`
-        query {
-            root {
-                ${Component.getFragment('root')}
-            }
-        }
-    `,
-  };
-
-  static routeName = 'RootRoute';
-}
+const RootQuery = {
+  root: () => Relay.QL`
+    query {
+      root
+    }
+  `,
+};
 
 class AppRoot extends React.Component {
   static propTypes = {
@@ -36,40 +30,25 @@ class AppRoot extends React.Component {
   }
 }
 
-const AppContainer = Relay.createContainer(AppRoot, {
-  fragments: {
-    root: () => Relay.QL`
-        fragment on Root {
-            me {
-                firstName
-                email
-                authorities {
-                    authority
-                }
-            }
-        }
-    `,
-  },
-});
-
-
 it('can make request to /q anyway', async () => {
-  const tree = renderer.create(
-    <Relay.Renderer
-      Container={AppContainer}
-      queryConfig={new RootRoute()}
-      environment={Relay.Store}
-      forceFetch={true}
-      render={({ error, props }) => {
-        if (error) {
-          return <div>error</div>;
-        } else if (props) {
-          return <AppContainer {...props} />;
+  const AppCnt = createRenderer(AppRoot, {
+    queries: RootQuery,
+    fragments: {
+      root: () => Relay.QL`
+        fragment on Root {
+          me {
+            firstName
+            email
+            authorities {
+              authority
+            }
+          }
         }
+      `,
+    },
+  });
 
-        return <div>loading</div>;
-      }}
-    />);
+  const tree = renderer.create(<AppCnt />);
 
   await delay(3000);
 

@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 it('fetches data', async () => {
   const response = await fetch('http://hashnews.cfapps.io');
 

@@ -16,15 +16,14 @@
     "eslint-plugin-react": "^6.7.1",
     "graphql": "^0.8.2",
     "graphql-relay": "^0.4.4",
+    "isomorphic-fetch": "^2.2.1",
     "jest": "^17.0.3",
     "jest-cli": "^17.0.3",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-relay": "^0.9.3",
     "react-test-renderer": "^15.4.0",
-    "sync-request": "^3.0.1",
-    "whatwg-fetch": "^2.0.1",
-    "xhr2": "^0.1.3"
+    "sync-request": "^3.0.1"
   },
   "scripts": {
     "clean": "rm -rf ../resources/static",
@@ -53,6 +52,8 @@
     }
   },
   "jest": {
-    "setupFiles": ["./test/env.js"]
+    "setupFiles": [
+      "./test/env.js"
+    ]
   }
 }
